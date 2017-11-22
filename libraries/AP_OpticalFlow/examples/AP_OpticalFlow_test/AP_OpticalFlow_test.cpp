@@ -51,13 +51,18 @@ void setup()
 
 void loop()
 {
-    hal.uartD->println("this only tests compilation succeeds");
-    optflow.update();
-    if (optflow.healthy()) {
-           hal.uartD->println(" PX4Flow is healthy");
-       }
 
-    hal.scheduler->delay(1000);
+    optflow.update();
+    Vector2f flowRate = optflow.flowRate();
+    Vector2f bodyRate = optflow.bodyRate();
+    hal.uartD->printf(
+                "\nflowRate.x:%10.8f \t flowRate.y:%10.8f \t bodyRate.x:%10.8f\t bodyRate.y:%10.8f\n",
+				flowRate.x,
+				flowRate.y,
+                 bodyRate.x,
+                 bodyRate.y);
+
+    hal.scheduler->delay(500);
 }
 
 AP_HAL_MAIN();
