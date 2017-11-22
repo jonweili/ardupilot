@@ -58,6 +58,7 @@ OpticalFlow::OpticalFlow(AP_AHRS_NavEKF &ahrs)
 
 void OpticalFlow::init(void)
 {
+	hal.uartD->println("Enter OpticalFlow::init ok!");
     if (!backend) {
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4 || CONFIG_HAL_BOARD == HAL_BOARD_VRBRAIN
         backend = new AP_OpticalFlow_PX4(*this);
@@ -70,9 +71,11 @@ void OpticalFlow::init(void)
 
     if (backend != NULL) {
         backend->init();
+        hal.uartD->println("init ok!");
     } else {
         _enabled = 0;
     }
+    hal.uartD->println("Exit init!");
 }
 
 void OpticalFlow::update(void)

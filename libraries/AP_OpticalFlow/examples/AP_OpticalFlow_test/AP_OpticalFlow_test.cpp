@@ -43,7 +43,7 @@ void setup()
     optflow.init();
 
     if (!optflow.healthy()) {
-        hal.uartD->print("Failed to initialise PX4Flow ");
+        hal.uartD->println("Failed to initialise PX4Flow ");
     }
 
     hal.scheduler->delay(1000);
