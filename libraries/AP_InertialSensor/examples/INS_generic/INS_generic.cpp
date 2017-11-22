@@ -21,7 +21,7 @@ void setup(void)
     // setup any board specific drivers
     BoardConfig.init();
 
-    hal.uartE->println("AP_InertialSensor startup...");
+    hal.uartD->println("AP_InertialSensor startup...");
 
     ins.init(100);
 
@@ -29,11 +29,11 @@ void setup(void)
     display_offsets_and_scaling();
 
     // display number of detected accels/gyros
-    hal.uartE->printf("\n");
-    hal.uartE->printf("Number of detected accels : %u\n", ins.get_accel_count());
-    hal.uartE->printf("Number of detected gyros  : %u\n\n", ins.get_gyro_count());
+    hal.uartD->printf("\n");
+    hal.uartD->printf("Number of detected accels : %u\n", ins.get_accel_count());
+    hal.uartD->printf("Number of detected gyros  : %u\n\n", ins.get_gyro_count());
 
-    hal.uartE->println("Complete. Reading:");
+    hal.uartD->println("Complete. Reading:");
 
 }
 
@@ -41,8 +41,8 @@ void loop(void)
 {
     int16_t user_input;
 
-    hal.uartE->println();
-    hal.uartE->println(
+    hal.uartD->println();
+    hal.uartD->println(
     "Menu:\n"
     "    d) display offsets and scaling\n"
     "    l) level (capture offsets from level)\n"
@@ -50,13 +50,13 @@ void loop(void)
     "    r) reboot");
 
     // wait for user input
-    while (!hal.uartE->available()) {
+    while (!hal.uartD->available()) {
         hal.scheduler->delay(20);
     }
 
     // read in user input
-    while (hal.uartE->available()) {
-        user_input = hal.uartE->read();
+    while (hal.uartD->available()) {
+        user_input = hal.uartD->read();
 
         if (user_input == 'd' || user_input == 'D') {
             display_offsets_and_scaling();
@@ -79,17 +79,17 @@ static void display_offsets_and_scaling()
     Vector3f gyro_offsets = ins.get_gyro_offsets();
 
     // display results
-    hal.uartE->printf(
+    hal.uartD->printf(
             "\nAccel Offsets X:%10.8f \t Y:%10.8f \t Z:%10.8f\n",
                     accel_offsets.x,
                     accel_offsets.y,
                     accel_offsets.z);
-    hal.uartE->printf(
+    hal.uartD->printf(
             "Accel Scale X:%10.8f \t Y:%10.8f \t Z:%10.8f\n",
                     accel_scale.x,
                     accel_scale.y,
                     accel_scale.z);
-    hal.uartE->printf(
+    hal.uartD->printf(
             "Gyro Offsets X:%10.8f \t Y:%10.8f \t Z:%10.8f\n",
                     gyro_offsets.x,
                     gyro_offsets.y,
@@ -106,15 +106,15 @@ static void run_test()
     static uint8_t ins_count = MAX(accel_count, gyro_count);
 
     // flush any user input
-    while (hal.uartE->available()) {
-        hal.uartE->read();
+    while (hal.uartD->available()) {
+        hal.uartD->read();
     }
 
     // clear out any existing samples from ins
     ins.update();
 
     // loop as long as user does not press a key
-    while (!hal.uartE->available()) {
+    while (!hal.uartD->available()) {
         // wait until we have a sample
         ins.wait_for_sample();
 
@@ -143,7 +143,7 @@ static void run_test()
 
             accel = ins.get_accel(ii);
 
-            hal.uartE->printf("%u - Accel (%c) : X:%6.2f Y:%6.2f Z:%6.2f norm:%5.2f",
+            hal.uartD->printf("%u - Accel (%c) : X:%6.2f Y:%6.2f Z:%6.2f norm:%5.2f",
                                 ii, state, accel.x, accel.y, accel.z, accel.length());
 
             gyro = ins.get_gyro(ii);
@@ -159,14 +159,14 @@ static void run_test()
                 state = 'u';
             }
 
-            hal.uartE->printf("   Gyro (%c) : X:%6.2f Y:%6.2f Z:%6.2f\n",
+            hal.uartD->printf("   Gyro (%c) : X:%6.2f Y:%6.2f Z:%6.2f\n",
                                 state, gyro.x, gyro.y, gyro.z);
         }
     }
 
     // clear user input
-    while (hal.uartE->available()) {
-        hal.uartE->read();
+    while (hal.uartD->available()) {
+        hal.uartD->read();
     }
 }
 
