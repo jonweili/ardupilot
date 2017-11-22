@@ -71,6 +71,7 @@ void AP_OpticalFlow_PX4::init(void)
 // update - read latest values from sensor and fill in x,y and totals.
 void AP_OpticalFlow_PX4::update(void)
 {
+	hal.uartD->println("Enter OpticalFlow_PX4::update ok!");
     // return immediately if not initialised
     if (_fd == -1) {
         return;
@@ -103,6 +104,7 @@ void AP_OpticalFlow_PX4::update(void)
 
         _update_frontend(state);
     }
+    hal.uartD->println("LEAVE OpticalFlow_PX4::update ok!");
 }
 
 #endif // CONFIG_HAL_BOARD == HAL_BOARD_PX4

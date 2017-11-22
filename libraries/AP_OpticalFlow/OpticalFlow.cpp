@@ -80,11 +80,14 @@ void OpticalFlow::init(void)
 
 void OpticalFlow::update(void)
 {
+	hal.uartD->println("Enter OpticalFlow::update ok!");
     if (backend != NULL) {
         backend->update();
     }
     // only healthy if the data is less than 0.5s old
     _flags.healthy = (AP_HAL::millis() - _last_update_ms < 500);
+    hal.uartD->printf("AP_HAL::millis() is %d\t",AP_HAL::millis());
+    hal.uartD->printf("_last_update_ms is %d\n",_last_update_ms);
     hal.uartD->printf("time_taken is %d\n",(AP_HAL::millis() - _last_update_ms));
 }
 
