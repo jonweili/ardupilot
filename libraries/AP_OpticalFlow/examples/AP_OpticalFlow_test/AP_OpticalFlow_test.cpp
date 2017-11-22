@@ -53,7 +53,13 @@ void loop()
 {
     hal.uartD->println("this only tests compilation succeeds");
 
-    hal.scheduler->delay(5000);
+    optflow.update();
+    if (optflow.healthy()) {
+        hal.uartD->println("PX4Flow is healthy! ");
+
+
+
+    hal.scheduler->delay(200);
 }
 
 AP_HAL_MAIN();
