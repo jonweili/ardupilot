@@ -57,7 +57,7 @@ void loop()
            hal.uartD->println(" PX4Flow is healthy");
        }
 
-    hal.scheduler->delay(200);
+    hal.scheduler->delay(600);
 }
 
 AP_HAL_MAIN();
