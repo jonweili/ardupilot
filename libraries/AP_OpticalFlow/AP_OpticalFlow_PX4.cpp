@@ -49,6 +49,7 @@ void AP_OpticalFlow_PX4::init(void)
         hal.uartD->printf("Unable to start px4flow driver\n");
     } else {
         // give it time to initialise
+    	    hal.uartD->printf(" start px4flow driver\n");
         hal.scheduler->delay(500);
     }
 #endif
@@ -56,6 +57,7 @@ void AP_OpticalFlow_PX4::init(void)
 
     // check for failure to open device
     if (_fd == -1) {
+    	hal.uartD->printf("Unable to open\n");
         return;
     }
 
@@ -63,6 +65,7 @@ void AP_OpticalFlow_PX4::init(void)
     if (ioctl(_fd, SENSORIOCSPOLLRATE, 10) != 0) {
         hal.uartD->printf("Unable to set flow rate to 10Hz\n");
     }
+    hal.uartD->printf(" set flow rate to 10Hz\n");
 }
 
 // update - read latest values from sensor and fill in x,y and totals.
