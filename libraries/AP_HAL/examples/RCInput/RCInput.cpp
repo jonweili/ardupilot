@@ -13,7 +13,7 @@ static uint16_t last_value[MAX_CHANNELS];
 
 void setup(void) 
 {
-    hal.console->printf("Starting RCInput test\n");
+    hal.uartD->printf("Starting RCInput test\n");
 }
 
 void loop(void)
@@ -37,13 +37,13 @@ void loop(void)
         if (max_channels_display > 0) {
             if (changed) {
                 for (uint8_t i = 0; i < max_channels_display; i++) {
-                    hal.console->printf("%2u:%04u ", (unsigned)i+1, (unsigned)last_value[i]);
+                    hal.uartD->printf("%2u:%04u ", (unsigned)i+1, (unsigned)last_value[i]);
                 }
-                hal.console->println();
+                hal.uartD->println();
             }
         } else {
-            hal.console->printf("Channels detected: %2u\n", nchannels);
-            hal.console->printf("Set max_channels_display > 0 to display channels values\n");
+            hal.uartD->printf("Channels detected: %2u\n", nchannels);
+            hal.uartD->printf("Set max_channels_display > 0 to display channels values\n");
         }
     }
     hal.scheduler->delay(100);

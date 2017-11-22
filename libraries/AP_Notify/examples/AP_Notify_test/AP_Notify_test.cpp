@@ -14,7 +14,7 @@ AP_BoardLED board_led;
 
 void setup()
 {
-    hal.console->println("AP_Notify library test");
+    hal.uartD->println("AP_Notify library test");
 
     // initialise the board leds
     board_led.init();

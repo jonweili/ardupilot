@@ -60,7 +60,7 @@ AP_MotorsQuad   motors(400);
 // setup
 void setup()
 {
-    hal.console->println("AP_Motors library test ver 1.0");
+    hal.uartD->println("AP_Motors library test ver 1.0");
 
     // motor initialisation
     motors.set_update_rate(490);
@@ -92,15 +92,15 @@ void loop()
     int16_t value;
 
     // display help
-    hal.console->println("Press 't' to run motor orders test, 's' to run stability patch test.  Be careful the motors will spin!");
+    hal.uartD->println("Press 't' to run motor orders test, 's' to run stability patch test.  Be careful the motors will spin!");
 
     // wait for user to enter something
-    while( !hal.console->available() ) {
+    while( !hal.uartD->available() ) {
         hal.scheduler->delay(20);
     }
 
     // get character from user
-    value = hal.console->read();
+    value = hal.uartD->read();
 
     // test motors
     if (value == 't' || value == 'T') {
@@ -114,17 +114,17 @@ void loop()
 // stability_test
 void motor_order_test()
 {
-    hal.console->println("testing motor order");
+    hal.uartD->println("testing motor order");
     motors.armed(true);
     for (int8_t i=1; i <= AP_MOTORS_MAX_NUM_MOTORS; i++) {
-        hal.console->printf("Motor %d\n",(int)i);
+        hal.uartD->printf("Motor %d\n",(int)i);
         motors.output_test(i, 1150);
         hal.scheduler->delay(300);
         motors.output_test(i, 1000);
         hal.scheduler->delay(2000);
     }
     motors.armed(false);
-    hal.console->println("finished test.");
+    hal.uartD->println("finished test.");
 
 }
 
@@ -139,18 +139,18 @@ void stability_test()
     int16_t rpy_tests[] = {0, 1000, 2000, 3000, 4500, -1000, -2000, -3000, -4500};
     uint8_t rpy_tests_num = sizeof(rpy_tests) / sizeof(int16_t);
 
-    hal.console->printf("\nTesting stability patch\nThrottle Min:%d Max:%d\n",(int)rc3.get_radio_min(),(int)rc3.get_radio_max());
+    hal.uartD->printf("\nTesting stability patch\nThrottle Min:%d Max:%d\n",(int)rc3.get_radio_min(),(int)rc3.get_radio_max());
 
     // arm motors
     motors.armed(true);
     motors.set_interlock(true);
 
 #if NUM_OUTPUTS <= 4
-    hal.console->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,AvgOut,LimRP,LimY,LimThD,LimThU\n");                       // quad
+    hal.uartD->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,AvgOut,LimRP,LimY,LimThD,LimThU\n");                       // quad
 #elif NUM_OUTPUTS <= 6
-    hal.console->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,Mot5,Mot6,AvgOut,LimRP,LimY,LimThD,LimThU\n");             // hexa
+    hal.uartD->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,Mot5,Mot6,AvgOut,LimRP,LimY,LimThD,LimThU\n");             // hexa
 #else
-    hal.console->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,Mot5,Mot6,Mot7,Mot8,AvgOut,LimRP,LimY,LimThD,LimThU\n");   // octa
+    hal.uartD->printf("Roll,Pitch,Yaw,Thr,Mot1,Mot2,Mot3,Mot4,Mot5,Mot6,Mot7,Mot8,AvgOut,LimRP,LimY,LimThD,LimThU\n");   // octa
 #endif
 
     // run stability test
@@ -171,11 +171,11 @@ void stability_test()
                     avg_out = ((hal.rcout->read(0) + hal.rcout->read(1) + hal.rcout->read(2) + hal.rcout->read(3))/4);
                     // display input and output
 #if NUM_OUTPUTS <= 4
-                    hal.console->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",                // quad
+                    hal.uartD->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",                // quad
 #elif NUM_OUTPUTS <= 6
-                    hal.console->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",          // hexa
+                    hal.uartD->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",          // hexa
 #else
-                    hal.console->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",    // octa
+                    hal.uartD->printf("%d,%d,%d,%3.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",    // octa
 #endif
                             (int)roll_in,
                             (int)pitch_in,
@@ -210,7 +210,7 @@ void stability_test()
     motors.set_throttle(0);
     motors.armed(false);
 
-    hal.console->println("finished test.");
+    hal.uartD->println("finished test.");
 }
 
 void update_motors()

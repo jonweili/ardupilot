@@ -49,7 +49,7 @@ AP_SerialManager serial_manager;
 
 void setup()
 {
-    hal.console->println("GPS AUTO library test");
+    hal.uartD->println("GPS AUTO library test");
 
     AP_BoardConfig{}.init();
 
@@ -68,7 +68,7 @@ void loop()
     // Update GPS state based on possible bytes received from the module.
     gps.update();
 
-    // If new GPS data is received, output it's contents to the console
+    // If new GPS data is received, output it's contents to the uartD
     // Here we rely on the time of the message in GPS class and the time of last message
     // saved in static variable last_msg_ms. When new message is received, the time
     // in GPS class will be updated.
@@ -80,11 +80,11 @@ void loop()
         const Location &loc = gps.location();
 
         // Print the contents of message
-        hal.console->print("Lat: ");
-        print_latlon(hal.console, loc.lat);
-        hal.console->print(" Lon: ");
-        print_latlon(hal.console, loc.lng);
-        hal.console->printf(" Alt: %.2fm GSP: %.2fm/s CoG: %d SAT: %d TIM: %u/%lu STATUS: %u\n",
+        hal.uartD->print("Lat: ");
+        print_latlon(hal.uartD, loc.lat);
+        hal.uartD->print(" Lon: ");
+        print_latlon(hal.uartD, loc.lng);
+        hal.uartD->printf(" Alt: %.2fm GSP: %.2fm/s CoG: %d SAT: %d TIM: %u/%lu STATUS: %u\n",
                             loc.alt * 0.01f,
                             gps.ground_speed(),
                             (int)gps.ground_course_cd() / 100,

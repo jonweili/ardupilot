@@ -34,7 +34,7 @@ void loop()
     uint32_t t1 = AP_HAL::micros();
     derivative.update(s, t1);
     float output = derivative.slope() * 1.0e6f;
-    hal.console->printf("%f %f %f %f\n", t, output, s, cosf(t));
+    hal.uartD->printf("%f %f %f %f\n", t, output, s, cosf(t));
 }
 
 AP_HAL_MAIN();

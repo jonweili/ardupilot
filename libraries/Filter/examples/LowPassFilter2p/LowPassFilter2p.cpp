@@ -16,7 +16,7 @@ static LowPassFilter2pFloat low_pass_filter(800, 30);
 static void setup()
 {
     // introduction
-    hal.console->printf("ArduPilot LowPassFilter2p test\n\n");
+    hal.uartD->printf("ArduPilot LowPassFilter2p test\n\n");
 }
 
 void loop()
@@ -31,13 +31,13 @@ void loop()
         new_value = sinf((float)i*2*M_PI*5/50.0f);  // 5hz
 
         // output to user
-        hal.console->printf("applying: %6.4f", new_value);
+        hal.uartD->printf("applying: %6.4f", new_value);
 
         // apply new value and retrieved filtered result
         filtered_value = low_pass_filter.apply(new_value);
 
         // display results
-        hal.console->printf("\toutput: %6.4f\n", filtered_value);
+        hal.uartD->printf("\toutput: %6.4f\n", filtered_value);
 
         hal.scheduler->delay(10);
     }

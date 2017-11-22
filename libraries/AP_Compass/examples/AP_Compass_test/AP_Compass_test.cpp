@@ -15,14 +15,14 @@ uint32_t timer;
 
 static void setup()
 {
-    hal.console->println("Compass library test");
+    hal.uartD->println("Compass library test");
 
     AP_BoardConfig{}.init(); // initialise the board drivers
 
     if (!compass.init()) {
         AP_HAL::panic("compass initialisation failed!");
     }
-    hal.console->printf("init done - %u compasses detected\n", compass.get_count());
+    hal.uartD->printf("init done - %u compasses detected\n", compass.get_count());
 
     // set offsets to account for surrounding interference
     compass.set_and_save_offsets(0, 0, 0, 0);
@@ -50,10 +50,10 @@ static void loop()
         for (uint8_t i = 0; i < compass_count; i++) {
             float heading;
 
-            hal.console->printf("Compass #%u: ", i);
+            hal.uartD->printf("Compass #%u: ", i);
 
             if (!compass.healthy()) {
-                hal.console->println("not healthy");
+                hal.uartD->println("not healthy");
                 continue;
             }
 
@@ -81,19 +81,19 @@ static void loop()
             offset[i][2] = -(max[i][2] + min[i][2]) / 2;
 
             // display all to user
-            hal.console->printf("Heading: %.2f (%3d,%3d,%3d)",
+            hal.uartD->printf("Heading: %.2f (%3d,%3d,%3d)",
                                 ToDeg(heading),
                                 (int)mag.x,
                                 (int)mag.y,
                                 (int)mag.z);
 
             // display offsets
-            hal.console->printf(" offsets(%.2f, %.2f, %.2f)",
+            hal.uartD->printf(" offsets(%.2f, %.2f, %.2f)",
                                 offset[i][0], offset[i][1], offset[i][2]);
 
-            hal.console->printf(" t=%u", (unsigned)read_time);
+            hal.uartD->printf(" t=%u", (unsigned)read_time);
 
-            hal.console->println();
+            hal.uartD->println();
         }
     } else {
         hal.scheduler->delay(1);

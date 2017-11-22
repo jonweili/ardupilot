@@ -43,14 +43,14 @@ void DataFlashTest::setup(void)
 {
     dataflash.Init(log_structure, ARRAY_SIZE(log_structure));
 
-    hal.console->println("Dataflash Log Test 1.0");
+    hal.uartD->println("Dataflash Log Test 1.0");
 
     // Test
     hal.scheduler->delay(20);
-    dataflash.ShowDeviceInfo(hal.console);
+    dataflash.ShowDeviceInfo(hal.uartD);
 
     if (dataflash.NeedPrep()) {
-        hal.console->println("Preparing dataflash...");
+        hal.uartD->println("Preparing dataflash...");
         dataflash.Prep();
     }
 
@@ -58,10 +58,10 @@ void DataFlashTest::setup(void)
     // This is similar to what we will do...
     dataflash.StartNewLog();
     log_num = dataflash.find_last_log();
-    hal.console->printf("Using log number %u\n", log_num);
-    hal.console->println("After testing perform erase before using DataFlash for logging!");
-    hal.console->println("");
-    hal.console->println("Writing to flash... wait...");
+    hal.uartD->printf("Using log number %u\n", log_num);
+    hal.uartD->println("After testing perform erase before using DataFlash for logging!");
+    hal.uartD->println("");
+    hal.uartD->println("Writing to flash... wait...");
 
     uint32_t total_micros = 0;
     uint16_t i;
@@ -84,7 +84,7 @@ void DataFlashTest::setup(void)
         hal.scheduler->delay(20);
     }
 
-    hal.console->printf("Average write time %.1f usec/byte\n", 
+    hal.uartD->printf("Average write time %.1f usec/byte\n",
                        (double)total_micros/((double)i*sizeof(struct log_Test)));
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL || CONFIG_HAL_BOARD == HAL_BOARD_LINUX
@@ -98,13 +98,13 @@ void DataFlashTest::loop(void)
 {
     uint16_t start, end;
 
-    hal.console->printf("Start read of log %u\n", log_num);
+    hal.uartD->printf("Start read of log %u\n", log_num);
 
     dataflash.get_log_boundaries(log_num, start, end); 
     dataflash.LogReadProcess(log_num, start, end, 
                              FUNCTOR_BIND_MEMBER(&DataFlashTest::print_mode, void, AP_HAL::BetterStream *, uint8_t),//print_mode,
-                             hal.console);
-    hal.console->printf("\nTest complete.  Test will repeat in 20 seconds\n");
+                             hal.uartD);
+    hal.uartD->printf("\nTest complete.  Test will repeat in 20 seconds\n");
     hal.scheduler->delay(20000);
 }
 

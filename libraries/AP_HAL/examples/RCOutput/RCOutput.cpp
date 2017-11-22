@@ -8,7 +8,7 @@ const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 
 void setup (void) 
 {
-    hal.console->println("Starting AP_HAL::RCOutput test");
+    hal.uartD->println("Starting AP_HAL::RCOutput test");
     for (uint8_t i=0; i<14; i++) {
         hal.rcout->enable_ch(i);
     }
@@ -25,10 +25,10 @@ void loop (void)
         pwm += delta;
         if (delta > 0 && pwm >= 2000) {
             delta = -1;
-            hal.console->printf("reversing\n");
+            hal.uartD->printf("reversing\n");
         } else if (delta < 0 && pwm <= 1000) {
             delta = 1;
-            hal.console->printf("reversing\n");
+            hal.uartD->printf("reversing\n");
         }
     }
     hal.scheduler->delay(5);

@@ -34,8 +34,8 @@ const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 
 void setup()
 {
-    // initialise console uart to 38400 baud
-    hal.console->begin(38400);
+    // initialise uartD uart to 38400 baud
+    hal.uartD->begin(38400);
 
     // initialise gps uart to 38400 baud
     hal.uartB->begin(38400);
@@ -43,13 +43,13 @@ void setup()
 
 void loop()
 {
-    // send characters received from the console to the GPS
-    while (hal.console->available()) {
-        hal.uartB->write(hal.console->read());
+    // send characters received from the uartD to the GPS
+    while (hal.uartD->available()) {
+        hal.uartB->write(hal.uartD->read());
     }
-    // send GPS characters to the console
+    // send GPS characters to the uartD
     while (hal.uartB->available()) {
-        hal.console->write(hal.uartB->read());
+        hal.uartD->write(hal.uartB->read());
     }
 }
 

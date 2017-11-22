@@ -12,7 +12,7 @@ AP_BattMonitor battery_mon;
 uint32_t timer;
 
 void setup() {
-    hal.console->println("Battery monitor library test");
+    hal.uartD->println("Battery monitor library test");
 
     // set battery monitor to smbus
     battery_mon.set_monitoring(0, AP_BattMonitor::BattMonitor_TYPE_SMBUS);
@@ -44,7 +44,7 @@ void loop()
     // display output at 1hz
     if (counter >= 10) {
         counter = 0;
-        hal.console->printf("\nVoltage: %.2f \tCurrent: %.2f \tTotCurr:%.2f",
+        hal.uartD->printf("\nVoltage: %.2f \tCurrent: %.2f \tTotCurr:%.2f",
 			    battery_mon.voltage(),
 			    battery_mon.current_amps(),
                 battery_mon.current_total_mah());

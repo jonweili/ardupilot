@@ -96,7 +96,7 @@ void DataFlashTest_AllTypes::Log_Write_TypeMessages()
 {
     dataflash.StartNewLog();
     log_num = dataflash.find_last_log();
-    hal.console->printf("Using log number %u\n", log_num);
+    hal.uartD->printf("Using log number %u\n", log_num);
 
     struct log_TYP1 typ1 = {
         LOG_PACKET_HEADER_INIT(LOG_TYP1_MSG),
@@ -143,7 +143,7 @@ void DataFlashTest_AllTypes::Log_Write_TypeMessages_Log_Write()
 {
     dataflash.StartNewLog();
     log_num = dataflash.find_last_log();
-    hal.console->printf("Using log number for Log_Write %u\n", log_num);
+    hal.uartD->printf("Using log number for Log_Write %u\n", log_num);
 
     dataflash.Log_Write("TYP3", TYP1_LBL, TYP1_FMT,
                         AP_HAL::micros64(),
@@ -181,29 +181,29 @@ void DataFlashTest_AllTypes::Log_Write_TypeMessages_Log_Write()
 
 void DataFlashTest_AllTypes::setup(void)
 {
-    hal.console->println("Dataflash All Types 1.0");
+    hal.uartD->println("Dataflash All Types 1.0");
 
     dataflash.Init(log_structure, ARRAY_SIZE(log_structure));
 
     // Test
     hal.scheduler->delay(20);
-    dataflash.ShowDeviceInfo(hal.console);
+    dataflash.ShowDeviceInfo(hal.uartD);
 
     if (dataflash.NeedPrep()) {
-        hal.console->println("Preparing dataflash...");
+        hal.uartD->println("Preparing dataflash...");
         dataflash.Prep();
     }
 
     Log_Write_TypeMessages();
     Log_Write_TypeMessages_Log_Write();
 
-    hal.console->printf("tests done\n");
+    hal.uartD->printf("tests done\n");
 }
 
 void DataFlashTest_AllTypes::loop(void)
 {
     while (true) {
-        hal.console->printf("all done\n");
+        hal.uartD->printf("all done\n");
         hal.scheduler->delay(1000);
     }
 }

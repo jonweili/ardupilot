@@ -35,7 +35,7 @@ private:
 void RC_UART::setup()
 {
     hal.scheduler->delay(1000);
-    hal.console->println("RC_UART starting");
+    hal.uartD->println("RC_UART starting");
     hal.UART->begin(baudrate, 512, 512);
     hal.rcout->set_freq(0xFF, RC_SPEED);
 }
@@ -45,7 +45,7 @@ uint8_t RC_UART::read_wait(void)
     while (true) {
         int16_t c = hal.UART->read();
         if (c != -1) {
-            // hal.console->printf("c=0x%02x\n", (unsigned)c);
+            // hal.uartD->printf("c=0x%02x\n", (unsigned)c);
             return c;
         }
         hal.scheduler->delay_microseconds(100);
@@ -63,7 +63,7 @@ void RC_UART::loop()
     while (true) {
         uint8_t c = read_wait();
         if (c == ESC_MAGIC) break;
-        // hal.console->printf("c=0x%02x\n", (unsigned)c);
+        // hal.uartD->printf("c=0x%02x\n", (unsigned)c);
     }
 
     uint8_t nbytes=0;
@@ -81,7 +81,7 @@ void RC_UART::loop()
     u2.crc[1] = read_wait();
     uint16_t crc2 = crc_calculate(u.bytes, NUM_CHANNELS*2);
     if (crc2 != u2.crc16) {
-        hal.console->printf("bad CRC 0x%04x should be 0x%04x\n", (unsigned)crc2, (unsigned)u2.crc16);
+        hal.uartD->printf("bad CRC 0x%04x should be 0x%04x\n", (unsigned)crc2, (unsigned)u2.crc16);
         return;
     }
 
@@ -101,10 +101,10 @@ void RC_UART::loop()
         rc[i].output();
     }
 
-    // report periods to console for debug
+    // report periods to uartD for debug
     counter++;
     if (counter % 100 == 0) {
-        hal.console->printf("%4u %4u %4u %4u\n",
+        hal.uartD->printf("%4u %4u %4u %4u\n",
                             (unsigned)u.period[0],
                             (unsigned)u.period[1],
                             (unsigned)u.period[2],

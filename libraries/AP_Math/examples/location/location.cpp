@@ -44,17 +44,17 @@ static struct Location location_from_point(Vector2f pt)
 
 static void test_passed_waypoint(void)
 {
-    hal.console->println("waypoint tests starting");
+    hal.uartD->println("waypoint tests starting");
     for (uint8_t i=0; i<ARRAY_SIZE(test_points); i++) {
         struct Location loc = location_from_point(test_points[i].location);
         struct Location wp1 = location_from_point(test_points[i].wp1);
         struct Location wp2 = location_from_point(test_points[i].wp2);
         if (location_passed_point(loc, wp1, wp2) != test_points[i].passed) {
-            hal.console->printf("Failed waypoint test %u\n", (unsigned)i);
+            hal.uartD->printf("Failed waypoint test %u\n", (unsigned)i);
             return;
         }
     }
-    hal.console->println("waypoint tests OK");
+    hal.uartD->println("waypoint tests OK");
 }
 
 static void test_one_offset(const struct Location &loc,
@@ -67,7 +67,7 @@ static void test_one_offset(const struct Location &loc,
     loc2 = loc;
     uint32_t t1 = AP_HAL::micros();
     location_offset(loc2, ofs_north, ofs_east);
-    hal.console->printf("location_offset took %u usec\n",
+    hal.uartD->printf("location_offset took %u usec\n",
                         (unsigned)(AP_HAL::micros() - t1));
     dist2 = get_distance(loc, loc2);
     bearing2 = get_bearing_cd(loc, loc2) * 0.01f;
@@ -80,7 +80,7 @@ static void test_one_offset(const struct Location &loc,
 
     if (fabsf(dist - dist2) > 1.0f ||
         brg_error > 1.0f) {
-        hal.console->printf("Failed offset test brg_error=%f dist_error=%f\n",
+        hal.uartD->printf("Failed offset test brg_error=%f dist_error=%f\n",
                       brg_error, dist-dist2);
     }
 }
@@ -128,19 +128,19 @@ static void test_accuracy(void)
     loc2 = loc;
     loc2.lat += 10000000;
     v2 = Vector2f(loc2.lat*1.0e-7f, loc2.lng*1.0e-7f);
-    hal.console->printf("1 degree lat dist=%.4f\n", get_distance(loc, loc2));
+    hal.uartD->printf("1 degree lat dist=%.4f\n", get_distance(loc, loc2));
 
     loc2 = loc;
     loc2.lng += 10000000;
     v2 = Vector2f(loc2.lat*1.0e-7f, loc2.lng*1.0e-7f);
-    hal.console->printf("1 degree lng dist=%.4f\n", get_distance(loc, loc2));
+    hal.uartD->printf("1 degree lng dist=%.4f\n", get_distance(loc, loc2));
 
     for (int32_t i=0; i<100; i++) {
         loc2 = loc;
         loc2.lat += i;
         v2 = Vector2f((loc.lat+i)*1.0e-7f, loc.lng*1.0e-7f);
         if (v2.x != v.x || v2.y != v.y) {
-            hal.console->printf("lat v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
+            hal.uartD->printf("lat v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
             break;
         }
     }
@@ -149,7 +149,7 @@ static void test_accuracy(void)
         loc2.lng += i;
         v2 = Vector2f(loc.lat*1.0e-7f, (loc.lng+i)*1.0e-7f);
         if (v2.x != v.x || v2.y != v.y) {
-            hal.console->printf("lng v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
+            hal.uartD->printf("lng v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
             break;
         }
     }
@@ -159,7 +159,7 @@ static void test_accuracy(void)
         loc2.lat -= i;
         v2 = Vector2f((loc.lat-i)*1.0e-7f, loc.lng*1.0e-7f);
         if (v2.x != v.x || v2.y != v.y) {
-            hal.console->printf("-lat v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
+            hal.uartD->printf("-lat v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
             break;
         }
     }
@@ -168,7 +168,7 @@ static void test_accuracy(void)
         loc2.lng -= i;
         v2 = Vector2f(loc.lat*1.0e-7f, (loc.lng-i)*1.0e-7f);
         if (v2.x != v.x || v2.y != v.y) {
-            hal.console->printf("-lng v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
+            hal.uartD->printf("-lng v2 != v at i=%d dist=%.4f\n", (int)i, get_distance(loc, loc2));
             break;
         }
     }
@@ -203,7 +203,7 @@ static void test_wrap_cd(void)
     for (uint8_t i=0; i < ARRAY_SIZE(wrap_180_tests); i++) {
         int32_t r = wrap_180_cd(wrap_180_tests[i].v);
         if (r != wrap_180_tests[i].wv) {
-            hal.console->printf("wrap_180: v=%ld wv=%ld r=%ld\n",
+            hal.uartD->printf("wrap_180: v=%ld wv=%ld r=%ld\n",
                                 (long)wrap_180_tests[i].v,
                                 (long)wrap_180_tests[i].wv,
                                 (long)r);
@@ -213,7 +213,7 @@ static void test_wrap_cd(void)
     for (uint8_t i=0; i < ARRAY_SIZE(wrap_360_tests); i++) {
         int32_t r = wrap_360_cd(wrap_360_tests[i].v);
         if (r != wrap_360_tests[i].wv) {
-            hal.console->printf("wrap_360: v=%ld wv=%ld r=%ld\n",
+            hal.uartD->printf("wrap_360: v=%ld wv=%ld r=%ld\n",
                                 (long)wrap_360_tests[i].v,
                                 (long)wrap_360_tests[i].wv,
                                 (long)r);
@@ -223,14 +223,14 @@ static void test_wrap_cd(void)
     for (uint8_t i=0; i < ARRAY_SIZE(wrap_PI_tests); i++) {
         float r = wrap_PI(wrap_PI_tests[i].v);
         if (fabsf(r - wrap_PI_tests[i].wv) > 0.001f) {
-            hal.console->printf("wrap_PI: v=%f wv=%f r=%f\n",
+            hal.uartD->printf("wrap_PI: v=%f wv=%f r=%f\n",
                                 wrap_PI_tests[i].v,
                                 wrap_PI_tests[i].wv,
                                 r);
         }
     }
 
-    hal.console->printf("wrap_cd tests done\n");
+    hal.uartD->printf("wrap_cd tests done\n");
 }
 
 static void test_wgs_conversion_functions(void)
@@ -276,7 +276,7 @@ static void test_wgs_conversion_functions(void)
     ecefs[8] = Vector3d((22+EARTH_A), 0, 0);
     ecefs[9] = Vector3d(-(22+EARTH_A), 0, 0);
 
-    hal.console->printf("TESTING wgsllh2ecef\n");
+    hal.uartD->printf("TESTING wgsllh2ecef\n");
     for (int i = 0; i < NUM_COORDS; i++) {
 
         Vector3d ecef;
@@ -288,15 +288,15 @@ static void test_wgs_conversion_functions(void)
         if ((x_err < MAX_DIST_ERROR_M) &&
                   (y_err < MAX_DIST_ERROR_M) &&
                   (z_err < MAX_DIST_ERROR_M)) {
-            hal.console->printf("passing llh to ecef test %d\n", i);
+            hal.uartD->printf("passing llh to ecef test %d\n", i);
         } else {
-            hal.console->printf("failed llh to ecef test %d: ", i);
-            hal.console->printf("(%f - %f) (%f - %f) (%f - %f) => %.10f %.10f %.10f\n", ecef[0], ecefs[i][0], ecef[1], ecefs[i][1], ecef[2], ecefs[i][2], x_err, y_err, z_err);
+            hal.uartD->printf("failed llh to ecef test %d: ", i);
+            hal.uartD->printf("(%f - %f) (%f - %f) (%f - %f) => %.10f %.10f %.10f\n", ecef[0], ecefs[i][0], ecef[1], ecefs[i][1], ecef[2], ecefs[i][2], x_err, y_err, z_err);
         }
 
     }
 
-    hal.console->printf("TESTING wgsecef2llh\n");
+    hal.uartD->printf("TESTING wgsecef2llh\n");
     for (int i = 0; i < NUM_COORDS; i++) {
 
         Vector3d llh;
@@ -308,10 +308,10 @@ static void test_wgs_conversion_functions(void)
         if ((lat_err < MAX_ANGLE_ERROR_RAD) &&
                   (lon_err < MAX_ANGLE_ERROR_RAD) &&
                   (hgt_err < MAX_DIST_ERROR_M)) {
-            hal.console->printf("passing exef to llh test %d\n", i);
+            hal.uartD->printf("passing exef to llh test %d\n", i);
         } else {
-            hal.console->printf("failed ecef to llh test %d: ", i);
-            hal.console->printf("%.10f %.10f %.10f\n", lat_err, lon_err, hgt_err);
+            hal.uartD->printf("failed ecef to llh test %d: ", i);
+            hal.uartD->printf("%.10f %.10f %.10f\n", lat_err, lon_err, hgt_err);
 
         }
 
@@ -328,7 +328,7 @@ void setup(void)
     test_accuracy();
     test_wrap_cd();
     test_wgs_conversion_functions();
-    hal.console->printf("ALL TESTS DONE\n");
+    hal.uartD->printf("ALL TESTS DONE\n");
 }
 
 void loop(void){}

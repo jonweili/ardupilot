@@ -41,14 +41,14 @@ void drive(uint16_t hz_speed) {
             pwm += delta;
             if (delta > 0 && pwm >= 2000) {
                 delta = -1;
-                hal.console->printf("reversing\n");
+                hal.uartD->printf("reversing\n");
             } else if (delta < 0 && pwm <= 1000) {
                 delta = 1;
-                hal.console->printf("normalizing\n");
+                hal.uartD->printf("normalizing\n");
             }
         }
         hal.scheduler->delay(5);
-        if (hal.console->available()) {
+        if (hal.uartD->available()) {
             break;
         }
     }
@@ -72,7 +72,7 @@ const struct Menu::command rcoutput_menu_commands[] = {
 MENU(menu, "Menu: ", rcoutput_menu_commands);
 
 void setup(void) {
-    hal.console->println("Starting AP_HAL::RCOutput test");
+    hal.uartD->println("Starting AP_HAL::RCOutput test");
 
     for (uint8_t i = 0; i < 14; i++) {
         hal.rcout->enable_ch(i);

@@ -29,10 +29,10 @@ char sensor_state;
 
 void setup()
 {
-    hal.console->println("APM RPM library test\n\n");
+    hal.uartD->println("APM RPM library test\n\n");
     RPM.init();
 
-    hal.console->printf("Detected %u RPM sensors\n\n", RPM.num_sensors());
+    hal.uartD->printf("Detected %u RPM sensors\n\n", RPM.num_sensors());
 }
 
 void loop(void)
@@ -53,19 +53,19 @@ void loop(void)
             sensor_state = '-';
         }
 
-        hal.console->printf("%u - (%c) RPM: %8.2f  Quality: %.2f  ",
+        hal.uartD->printf("%u - (%c) RPM: %8.2f  Quality: %.2f  ",
                 ii, sensor_state, RPM.get_rpm(ii), RPM.get_signal_quality(ii));
 
         if (ii+1<RPM.num_sensors()) {
             // Print a seperating bar if more sensors to process
-            hal.console->printf("|  ");
+            hal.uartD->printf("|  ");
         }
 
     }
 
     hal.scheduler->delay(100);
 
-    hal.console->printf("\n");
+    hal.uartD->printf("\n");
 }
 
 AP_HAL_MAIN();

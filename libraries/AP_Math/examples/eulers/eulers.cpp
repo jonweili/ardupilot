@@ -28,7 +28,7 @@ static void check_result(const char *msg,
     if (isnan(roll2) ||
         isnan(pitch2) ||
         isnan(yaw2)) {
-        hal.console->printf("%s NAN eulers roll=%f pitch=%f yaw=%f\n",
+        hal.uartD->printf("%s NAN eulers roll=%f pitch=%f yaw=%f\n",
                             msg, roll, pitch, yaw);
     }
 
@@ -48,7 +48,7 @@ static void check_result(const char *msg,
             ToDeg(rad_diff(pitch, -M_PI/2)) < 1) {
             // we expect breakdown at these poles
 #if SHOW_POLES_BREAKDOWN
-            hal.console->printf(
+            hal.uartD->printf(
                 "%s breakdown eulers roll=%f/%f pitch=%f/%f yaw=%f/%f\n",
                 msg,
                 ToDeg(roll), ToDeg(roll2),
@@ -56,7 +56,7 @@ static void check_result(const char *msg,
                 ToDeg(yaw), ToDeg(yaw2));
 #endif
         } else {
-            hal.console->printf(
+            hal.uartD->printf(
                 "%s incorrect eulers roll=%f/%f pitch=%f/%f yaw=%f/%f\n",
                 msg,
                 ToDeg(roll), ToDeg(roll2),
@@ -84,14 +84,14 @@ void test_matrix_eulers(void)
     uint8_t i, j, k;
     uint8_t N = ARRAY_SIZE(angles);
 
-    hal.console->println("rotation matrix unit tests\n");
+    hal.uartD->println("rotation matrix unit tests\n");
 
     for (i=0; i<N; i++)
         for (j=0; j<N; j++)
             for (k=0; k<N; k++)
                 test_euler(angles[i], angles[j], angles[k]);
 
-    hal.console->println("tests done\n");
+    hal.uartD->println("tests done\n");
 }
 
 static void test_quaternion(float roll, float pitch, float yaw)
@@ -123,7 +123,7 @@ void test_quaternion_eulers(void)
     uint8_t i, j, k;
     uint8_t N = ARRAY_SIZE(angles);
 
-    hal.console->println("quaternion unit tests\n");
+    hal.uartD->println("quaternion unit tests\n");
 
     test_quaternion(M_PI/4, 0, 0);
     test_quaternion(0, M_PI/4, 0);
@@ -148,7 +148,7 @@ void test_quaternion_eulers(void)
             for (k=0; k<N; k++)
                 test_quaternion(angles[i], angles[j], angles[k]);
 
-    hal.console->println("tests done\n");
+    hal.uartD->println("tests done\n");
 }
 
 
@@ -170,7 +170,7 @@ static void test_conversion(float roll, float pitch, float yaw)
     m2.from_euler(roll, pitch, yaw);
     m2.to_euler(&roll3, &pitch3, &yaw3);
     if (m.is_nan()) {
-        hal.console->printf("NAN matrix roll=%f pitch=%f yaw=%f\n",
+        hal.uartD->printf("NAN matrix roll=%f pitch=%f yaw=%f\n",
                       roll, pitch, yaw);
     }
 
@@ -183,7 +183,7 @@ void test_conversions(void)
     uint8_t i, j, k;
     uint8_t N = ARRAY_SIZE(angles);
 
-    hal.console->println("matrix/quaternion tests\n");
+    hal.uartD->println("matrix/quaternion tests\n");
 
     test_conversion(1, 1.1f, 1.2f);
     test_conversion(1, -1.1f, 1.2f);
@@ -196,7 +196,7 @@ void test_conversions(void)
             for (k=0; k<N; k++)
                 test_conversion(angles[i], angles[j], angles[k]);
 
-    hal.console->println("tests done\n");
+    hal.uartD->println("tests done\n");
 }
 
 void test_frame_transforms(void)
@@ -205,7 +205,7 @@ void test_frame_transforms(void)
     Quaternion q;
     Matrix3f m;
 
-    hal.console->println("frame transform tests\n");
+    hal.uartD->println("frame transform tests\n");
 
     q.from_euler(ToRad(45), ToRad(45), ToRad(45));
     q.normalize();
@@ -213,21 +213,21 @@ void test_frame_transforms(void)
 
     v2 = v = Vector3f(0, 0, 1);
     q.earth_to_body(v2);
-    hal.console->printf("%f %f %f\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n", v2.x, v2.y, v2.z);
     v2 = m * v;
-    hal.console->printf("%f %f %f\n\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n\n", v2.x, v2.y, v2.z);
 
     v2 = v = Vector3f(0, 1, 0);
     q.earth_to_body(v2);
-    hal.console->printf("%f %f %f\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n", v2.x, v2.y, v2.z);
     v2 = m * v;
-    hal.console->printf("%f %f %f\n\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n\n", v2.x, v2.y, v2.z);
 
     v2 = v = Vector3f(1, 0, 0);
     q.earth_to_body(v2);
-    hal.console->printf("%f %f %f\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n", v2.x, v2.y, v2.z);
     v2 = m * v;
-    hal.console->printf("%f %f %f\n", v2.x, v2.y, v2.z);
+    hal.uartD->printf("%f %f %f\n", v2.x, v2.y, v2.z);
 }
 
 // generate a random float between -1 and 1
@@ -275,7 +275,7 @@ void test_matrix_rotate(void)
         float err = diff.a.length() + diff.b.length() + diff.c.length();
 
         if (err > 0) {
-            hal.console->printf("ERROR: i=%u err=%f\n", (unsigned)i, err);
+            hal.uartD->printf("ERROR: i=%u err=%f\n", (unsigned)i, err);
         }
     }
 }
@@ -285,7 +285,7 @@ void test_matrix_rotate(void)
  */
 void setup(void)
 {
-    hal.console->println("euler unit tests\n");
+    hal.uartD->println("euler unit tests\n");
 
     test_conversion(0, M_PI, 0);
 

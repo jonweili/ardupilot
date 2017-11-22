@@ -35,10 +35,10 @@ void setup(void)
     serial_manager.init();
 
     if( compass.init() ) {
-        hal.console->printf("Enabling compass\n");
+        hal.uartD->printf("Enabling compass\n");
         ahrs.set_compass(&compass);
     } else {
-        hal.console->printf("No compass detected\n");
+        hal.uartD->printf("No compass detected\n");
     }
     gps.init(NULL, serial_manager);
 }
@@ -68,7 +68,7 @@ void loop(void)
 
     if (now - last_print >= 100000 /* 100ms : 10hz */) {
         Vector3f drift  = ahrs.get_gyro_drift();
-        hal.console->printf(
+        hal.uartD->printf(
                 "r:%4.1f  p:%4.1f y:%4.1f "
                     "drift=(%5.1f %5.1f %5.1f) hdg=%.1f rate=%.1f\n",
                         ToDeg(ahrs.roll),

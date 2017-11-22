@@ -15,7 +15,7 @@ PID pid;
 
 void setup()
 {
-    hal.console->println("ArduPilot Mega PID library test");
+    hal.uartD->println("ArduPilot Mega PID library test");
 
     hal.scheduler->delay(1000);
     //rc.trim();
@@ -31,7 +31,7 @@ void setup()
     pid.kD(0);
     pid.imax(0);
     pid.load_gains();
-    hal.console->printf(
+    hal.uartD->printf(
             "P %f  I %f  D %f  imax %d\n",
             pid.kP(), pid.kI(), pid.kD(), pid.imax());
 }
@@ -43,8 +43,8 @@ void loop()
     long error  = hal.rcin->read(0) - radio_trim;
     long control= pid.get_pid(error, 1);
 
-    hal.console->print("control: ");
-    hal.console->println(control,BASE_DEC);
+    hal.uartD->print("control: ");
+    hal.uartD->println(control,BASE_DEC);
 }
 
 AP_HAL_MAIN();

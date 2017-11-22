@@ -23,7 +23,7 @@ butter50hz8_0 butter;
 void setup()
 {
     // introduction
-    hal.console->printf("ArduPilot ModeFilter library test ver 1.0\n\n");
+    hal.uartD->printf("ArduPilot ModeFilter library test ver 1.0\n\n");
 
     // Wait for the serial connection
     hal.scheduler->delay(500);
@@ -50,7 +50,7 @@ void readTemp()
     // butterworth filter example
     butter.filter(raw_temp);
 
-    hal.console->printf("RT: %lu\n", (unsigned long)raw_temp);
+    hal.uartD->printf("RT: %lu\n", (unsigned long)raw_temp);
 }
 
 //Main loop where the action takes place

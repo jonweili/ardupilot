@@ -4,7 +4,7 @@
 const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 
 void setup(void) {
-    hal.console->println("Starting Printf test");
+    hal.uartD->println("Starting Printf test");
 }
 
 static const struct {
@@ -49,11 +49,11 @@ static void test_printf(void)
     uint8_t i;
     char buf[30];
     uint8_t failures = 0;
-    hal.console->printf("Running printf tests\n");
+    hal.uartD->printf("Running printf tests\n");
     for (i=0; i < ARRAY_SIZE(float_tests); i++) {
         int ret = hal.util->snprintf(buf, sizeof(buf), float_tests[i].fmt, float_tests[i].v);
         if (strcmp(buf, float_tests[i].result) != 0) {
-            hal.console->printf("Failed float_tests[%u] '%s' -> '%s' should be '%s'\n",
+            hal.uartD->printf("Failed float_tests[%u] '%s' -> '%s' should be '%s'\n",
                                 (unsigned)i,
                                 float_tests[i].fmt,
                                 buf,
@@ -61,7 +61,7 @@ static void test_printf(void)
             failures++;
         }
         if (ret != (int)strlen(float_tests[i].result)) {
-            hal.console->printf("Failed float_tests[%u] ret=%d/%d '%s' should be '%s'\n",
+            hal.uartD->printf("Failed float_tests[%u] ret=%d/%d '%s' should be '%s'\n",
                                 (unsigned)i,
                                 ret, (int)strlen(float_tests[i].result),
                                 float_tests[i].fmt,
@@ -69,7 +69,7 @@ static void test_printf(void)
             failures++;
         }
     }
-    hal.console->printf("%u failures\n", (unsigned)failures);
+    hal.uartD->printf("%u failures\n", (unsigned)failures);
 }
 
 void loop(void)

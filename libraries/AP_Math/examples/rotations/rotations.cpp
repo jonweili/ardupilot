@@ -9,7 +9,7 @@ const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 
 static void print_vector(Vector3f &v)
 {
-    hal.console->printf("[%.4f %.4f %.4f]\n",
+    hal.uartD->printf("[%.4f %.4f %.4f]\n",
                         v.x, v.y, v.z);
 }
 
@@ -22,7 +22,7 @@ static void test_rotation_accuracy(void)
     int16_t i;
     float rot_angle;
 
-    hal.console->println("\nRotation method accuracy:");
+    hal.uartD->println("\nRotation method accuracy:");
 
     // test roll
     for( i=0; i<90; i++ ) {
@@ -50,7 +50,7 @@ static void test_rotation_accuracy(void)
         attitude.to_euler(&roll2, &pitch2, &yaw2);
         
         // display results
-        hal.console->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
+        hal.uartD->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
                             (int)i,ToDeg(roll), ToDeg(roll2));
     }
 
@@ -80,7 +80,7 @@ static void test_rotation_accuracy(void)
         attitude.to_euler(&roll2, &pitch2, &yaw2);
         
         // display results
-        hal.console->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
+        hal.uartD->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
                             (int)i,ToDeg(pitch), ToDeg(pitch2));
     }
     
@@ -111,7 +111,7 @@ static void test_rotation_accuracy(void)
         attitude.to_euler(&roll2, &pitch2, &yaw2);
         
         // display results
-        hal.console->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
+        hal.uartD->printf("actual angle: %d  angle1:%4.2f  angle2:%4.2f\n",
                             (int)i,ToDeg(yaw), ToDeg(yaw2));
     }
 }
@@ -135,42 +135,42 @@ static void test_euler(enum Rotation rotation, float roll, float pitch, float ya
 
     diff = (v2 - v1);
     if (diff.length() > accuracy) {
-        hal.console->printf("euler test %u failed : yaw:%d roll:%d pitch:%d\n",
+        hal.uartD->printf("euler test %u failed : yaw:%d roll:%d pitch:%d\n",
         (unsigned)rotation,
         (int)yaw,
         (int)roll,
         (int)pitch);
-        hal.console->printf("fast rotated: ");
+        hal.uartD->printf("fast rotated: ");
         print_vector(v1);
-        hal.console->printf("slow rotated: ");
+        hal.uartD->printf("slow rotated: ");
         print_vector(v2);
-        hal.console->printf("\n");
+        hal.uartD->printf("\n");
     }
 }
 
 static void test_rotate_inverse(void)
 {
-    hal.console->println("\nrotate inverse test(Vector (1,1,1)):");
+    hal.uartD->println("\nrotate inverse test(Vector (1,1,1)):");
     Vector3f vec(1.0f,1.0f,1.0f), cmp_vec(1.0f,1.0f,1.0f);
     for (enum Rotation r=ROTATION_NONE; 
          r<ROTATION_MAX;
          r = (enum Rotation)((uint8_t)r+1)) {
-        hal.console->printf("\nROTATION(%d) ",r);
+        hal.uartD->printf("\nROTATION(%d) ",r);
         vec.rotate(r);
         print_vector(vec);
 
-        hal.console->printf("INV_ROTATION(%d)",r);
+        hal.uartD->printf("INV_ROTATION(%d)",r);
         vec.rotate_inverse(r);
         print_vector(vec);
         if((vec - cmp_vec).length() > 1e-5) {
-            hal.console->printf("Rotation Test Failed!!! %.8f\n",(vec - cmp_vec).length());
+            hal.uartD->printf("Rotation Test Failed!!! %.8f\n",(vec - cmp_vec).length());
             return;
         }
     }
 }
 static void test_eulers(void)
 {
-    hal.console->println("euler tests");
+    hal.uartD->println("euler tests");
     test_euler(ROTATION_NONE,               0,   0,   0);
     test_euler(ROTATION_YAW_45,             0,   0,  45);
     test_euler(ROTATION_YAW_90,             0,   0,  90);
@@ -231,7 +231,7 @@ static bool have_rotation(const Matrix3f &m)
 
 static void missing_rotations(void)
 {
-    hal.console->println("testing for missing rotations");
+    hal.uartD->println("testing for missing rotations");
     uint16_t roll, pitch, yaw;
     for (yaw=0; yaw<360; yaw += 90)
         for (pitch=0; pitch<360; pitch += 90)
@@ -239,7 +239,7 @@ static void missing_rotations(void)
                 Matrix3f m;
                 m.from_euler(ToRad(roll), ToRad(pitch), ToRad(yaw));
                 if (!have_rotation(m)) {
-                    hal.console->printf("Missing rotation (%u, %u, %u)\n", roll, pitch, yaw);
+                    hal.uartD->printf("Missing rotation (%u, %u, %u)\n", roll, pitch, yaw);
                 }
             }
 }
@@ -249,12 +249,12 @@ static void missing_rotations(void)
  */
 void setup(void)
 {
-    hal.console->println("rotation unit tests\n");
+    hal.uartD->println("rotation unit tests\n");
     test_rotation_accuracy();
     test_eulers();
     missing_rotations();
     test_rotate_inverse();
-    hal.console->println("rotation unit tests done\n");
+    hal.uartD->println("rotation unit tests done\n");
 }
 
 void loop(void) {}

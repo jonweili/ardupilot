@@ -15,7 +15,7 @@ static uint16_t last_value[MAX_CHANNELS];
 
 void setup(void) 
 {
-    hal.console->printf("Starting RCInputToRCOutput test\n");
+    hal.uartD->printf("Starting RCInputToRCOutput test\n");
 
     for(uint8_t i = 0; i < MAX_CHANNELS; i++) {
         hal.rcout->enable_ch(i);
@@ -44,9 +44,9 @@ void loop(void)
     }
     if(changed) {
         for(uint8_t i = 0; i < max_channels; i++) {
-            hal.console->printf("%2u:%04u ", (unsigned)i + 1, (unsigned)last_value[i]);
+            hal.uartD->printf("%2u:%04u ", (unsigned)i + 1, (unsigned)last_value[i]);
         }
-        hal.console->println();
+        hal.uartD->println();
     }
     hal.scheduler->delay(100);
 }

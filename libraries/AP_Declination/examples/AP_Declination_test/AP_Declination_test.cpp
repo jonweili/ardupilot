@@ -83,7 +83,7 @@ void setup(void)
     uint16_t pass = 0, fail = 0;
     uint32_t total_time=0;
 
-    hal.console->print("Beginning Test. Please wait...\n");
+    hal.uartD->print("Beginning Test. Please wait...\n");
 
     for(int16_t i = -90; i <= 90; i+=5)
     {
@@ -100,15 +100,15 @@ void setup(void)
             }
             else
             {
-                hal.console->printf("FAIL: %i, %i : %f, %f\n", i, j, declination, declination_test);
+                hal.uartD->printf("FAIL: %i, %i : %f, %f\n", i, j, declination, declination_test);
                 fail++;
             }
         }
     }
-    hal.console->print("Ending Test.\n\n");
-    hal.console->printf("Total Pass: %i\n", pass);
-    hal.console->printf("Total Fail: %i\n", fail);
-    hal.console->printf("Average time per call: %.1f usec\n",
+    hal.uartD->print("Ending Test.\n\n");
+    hal.uartD->printf("Total Pass: %i\n", pass);
+    hal.uartD->printf("Total Fail: %i\n", fail);
+    hal.uartD->printf("Average time per call: %.1f usec\n",
                   total_time/(float)(pass+fail));
 }
 

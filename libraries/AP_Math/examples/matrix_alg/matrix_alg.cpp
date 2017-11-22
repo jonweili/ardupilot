@@ -59,7 +59,7 @@ static void test_matrix_inverse(void)
         out_mat = mat_mul(test_mat,mat,3);
         inverse(mat,mat,3);
     } else {
-        hal.console->printf("3x3 Matrix is Singular!\n");
+        hal.uartD->printf("3x3 Matrix is Singular!\n");
         return;
 
     }
@@ -90,7 +90,7 @@ static void test_matrix_inverse(void)
         out_mat = mat_mul(test_mat,mat,4);
         inverse(mat,mat,4);
     } else {
-        hal.console->printf("4x4 Matrix is Singular!\n");
+        hal.uartD->printf("4x4 Matrix is Singular!\n");
         return;
     }
     printf("\n\n4x4 Test Matrix:\n");
@@ -120,7 +120,7 @@ static void test_matrix_inverse(void)
         out_mat = mat_mul(test_mat,mat,5);
         inverse(mat,mat,5);
     } else {
-        hal.console->printf("5x5 Matrix is Singular!\n");
+        hal.uartD->printf("5x5 Matrix is Singular!\n");
         return;
 
     }
@@ -141,15 +141,15 @@ static void test_matrix_inverse(void)
         return;
     }
 
-    hal.console->printf("All tests succeeded!!\n");
+    hal.uartD->printf("All tests succeeded!!\n");
 }
 
 
 void setup(void)
 {
-    hal.console->println("Matrix Algebra test\n");
+    hal.uartD->println("Matrix Algebra test\n");
     test_matrix_inverse();
-    hal.console->println("Matrix Algebra tests done\n");
+    hal.uartD->println("Matrix Algebra tests done\n");
 }
 
 void loop(void) {}

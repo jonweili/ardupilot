@@ -21,7 +21,7 @@ const AP_HAL::HAL& hal = AP_HAL::get_HAL();
 // setup function
 void setup()
 {
-    hal.console->println("ArduPilot Mega AC_PID library test");
+    hal.uartD->println("ArduPilot Mega AC_PID library test");
 
     hal.scheduler->delay(1000);
 }
@@ -38,7 +38,7 @@ void loop()
     float control_P, control_I, control_D;
 
     // display PID gains
-    hal.console->printf("P %f  I %f  D %f  imax %f\n", (float)pid.kP(), (float)pid.kI(), (float)pid.kD(), (float)pid.imax());
+    hal.uartD->printf("P %f  I %f  D %f  imax %f\n", (float)pid.kP(), (float)pid.kI(), (float)pid.kD(), (float)pid.imax());
 
     // capture radio trim
     radio_trim = hal.rcin->read(0);
@@ -52,7 +52,7 @@ void loop()
         control_D = pid.get_d();
 
         // display pid results
-        hal.console->printf("radio: %d\t err: %d\t pid:%4.2f (p:%4.2f i:%4.2f d:%4.2f)\n",
+        hal.uartD->printf("radio: %d\t err: %d\t pid:%4.2f (p:%4.2f i:%4.2f d:%4.2f)\n",
                 (int)radio_in, (int)error,
                 (float)(control_P+control_I+control_D),
                 (float)control_P, (float)control_I, (float)control_D);
