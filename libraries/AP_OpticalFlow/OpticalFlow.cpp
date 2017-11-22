@@ -85,6 +85,7 @@ void OpticalFlow::update(void)
     }
     // only healthy if the data is less than 0.5s old
     _flags.healthy = (AP_HAL::millis() - _last_update_ms < 500);
+    hal.uartD->printf("time_taken is %d\n",(AP_HAL::millis() - _last_update_ms));
 }
 
 void OpticalFlow::setHIL(const struct OpticalFlow::OpticalFlow_state &state)
