@@ -43,7 +43,7 @@ void setup()
 
 void loop()
 {
-    // Delay between reads  lala
+    // Delay between reads
     hal.scheduler->delay(100);
     sonar.update();
 
