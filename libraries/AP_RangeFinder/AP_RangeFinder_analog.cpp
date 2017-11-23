@@ -84,6 +84,7 @@ void AP_RangeFinder_analog::update_voltage(void)
  */
 void AP_RangeFinder_analog::update(void)
 {
+	hal.uartD->println("ENTER RNGFND_ANALOG OK!");
     update_voltage();
     float v = state.voltage_mv * 0.001f;
     float dist_m = 0;
