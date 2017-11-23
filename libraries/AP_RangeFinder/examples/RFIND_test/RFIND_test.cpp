@@ -16,9 +16,24 @@ void setup()
     hal.uartD->println("Range Finder library test");
 
     // setup for analog pin 13
+    /*
     AP_Param::set_object_value(&sonar, sonar.var_info, "_TYPE", RangeFinder::RangeFinder_TYPE_PLI2C);
     AP_Param::set_object_value(&sonar, sonar.var_info, "_PIN", -1);
     AP_Param::set_object_value(&sonar, sonar.var_info, "_SCALING", 1.0);
+   */
+
+    //steup for analog pin 14 (AD3.3)
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_TYPE",RangeFinder::RangeFinder_TYPE_ANALOG);
+    AP_Param::set_object_value(&sonar, sonar.var_info, "_PIN", 14);
+    AP_Param::set_object_value(&sonar, sonar.var_info, "_SCALING", 1.02354);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_FUNCTION",0);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_RMETRIC",1);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_STOP_PIN",-1);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_MAX_CM",500);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_MIN_CM",30);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_GNDCLEAR",2);
+    AP_Param::set_object_value(&sonar,sonar.var_info,"_RNGFND_OFFSET",0.29);
+
 
     // initialise sensor, delaying to make debug easier
     hal.scheduler->delay(2000);
