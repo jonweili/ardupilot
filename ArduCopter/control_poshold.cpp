@@ -83,8 +83,7 @@ bool Copter::poshold_init(bool ignore_checks)
 #endif
 
     // fail to initialise PosHold mode if no GPS lock
-    //if (!position_ok() && !ignore_checks) {
-    if (!position_ok()) {
+    if (!position_ok() && !ignore_checks) {
         return false;
     }
     
