@@ -3,6 +3,8 @@
 #include "RangeFinder.h"
 #include "RangeFinder_Backend.h"
 
+float dist_before_m = 0;
+
 class AP_RangeFinder_analog : public AP_RangeFinder_Backend
 {
 public:
