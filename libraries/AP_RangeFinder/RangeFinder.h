@@ -69,6 +69,7 @@ public:
     struct RangeFinder_State {
         uint8_t                instance;    // the instance number of this RangeFinder
         uint16_t               distance_cm; // distance: in cm
+        uint16_t               distance_last_cm; // last distance: in cm
         uint16_t               voltage_mv;  // voltage in millivolts,
                                             // if applicable, otherwise 0
         enum RangeFinder_Status status;     // sensor status

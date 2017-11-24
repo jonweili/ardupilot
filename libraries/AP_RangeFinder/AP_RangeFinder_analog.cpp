@@ -115,15 +115,16 @@ void AP_RangeFinder_analog::update(void)
         dist_m = 0;
     }
 
-    //add filter to prevent noise which is larger than 0.5m
-    if((dist_before_m - dist_m)>0.5 || (dist_before_m - dist_m)<-0.5)
+
+    //add filter to prevent noise which is larger than 50cm
+    if((state.distance_last_cm - dist_m*100)>50 || (state.distance_last_cm - dist_m*100)<-50)
     {
-    	state.distance_cm = dist_before_m * 100.f;
+    	state.distance_cm = state.distance_last_cm;
     }
     else
     {
     	state.distance_cm = dist_m * 100.0f;
-    	dist_before_m = dist_m;
+    	state.distance_last_cm = state.distance_cm ;
     }
     // update range_valid state based on distance measured
     update_status();
