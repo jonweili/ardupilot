@@ -116,8 +116,8 @@ void AP_RangeFinder_analog::update(void)
     }
 
 
-    //add filter to prevent noise which is larger than 50cm
-    if((state.distance_last_cm - dist_m*100)>50 || (state.distance_last_cm - dist_m*100)<-50)
+    //add filter to prevent noise which is larger than 10cm
+    if((state.distance_last_cm - dist_m*100)>10 || (state.distance_last_cm - dist_m*100)<-10)
     {
     	state.distance_cm = state.distance_last_cm;
     }
