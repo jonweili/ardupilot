@@ -336,7 +336,7 @@ bool Copter::position_ok()
     }
 
     // check ekf position estimate
-    if(ekf_position_ok())
+ /*   if(ekf_position_ok())
     	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"EKF_POSITION OK!!");
     else
     	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"EKF POSITION bad!!");
@@ -344,7 +344,7 @@ bool Copter::position_ok()
     if(optflow_position_ok())
     	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"OPTFLOW OK!!");
     else
-    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"OPTFLOW bad!!");
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"OPTFLOW bad!!");*/
 
     return (ekf_position_ok() || optflow_position_ok());
 }
@@ -387,6 +387,18 @@ bool Copter::optflow_position_ok()
     if (!motors.armed()) {
         return (filt_status.flags.pred_horiz_pos_rel);
     } else {
+
+      	if(filt_status.flags.horiz_pos_rel)
+    	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"horiz_pos_rel OK!!");
+    	    else
+    	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"horiz_pos_rel bad!!");
+
+      	if(!filt_status.flags.const_pos_mode)
+      	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"!const_pos_mode OK!!");
+    	    else
+    	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"!const_pos_mode bad!!");
+
+
         return (filt_status.flags.horiz_pos_rel && !filt_status.flags.const_pos_mode);
     }
 #endif
