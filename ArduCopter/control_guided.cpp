@@ -39,7 +39,8 @@ struct Guided_Limit {
 bool Copter::guided_init(bool ignore_checks)
 {
 	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF," ENTER GUIDED!!");
-    if (position_ok() || ignore_checks) {
+    //if (position_ok() || ignore_checks) {
+	if (ignore_checks) {
         // initialise yaw
         set_auto_yaw_mode(get_default_auto_yaw_mode(false));
         // start in position control mode
