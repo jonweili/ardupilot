@@ -85,10 +85,10 @@ bool Copter::poshold_init(bool ignore_checks)
 
     // fail to initialise PosHold mode if no GPS lock
 
- /*   if (!position_ok() && !ignore_checks) {
+    if (!position_ok() && !ignore_checks) {
     	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF," POSHOLD FALSE!!");
         return false;
-    }*/
+    }
     
     // initialize vertical speeds and acceleration
     pos_control.set_speed_z(-g.pilot_velocity_z_max, g.pilot_velocity_z_max);

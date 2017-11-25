@@ -330,10 +330,22 @@ bool Copter::position_ok()
 {
     // return false if ekf failsafe has triggered
     if (failsafe.ekf) {
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"EKF FAILSAFE!!");
+
         return false;
     }
 
     // check ekf position estimate
+    if(ekf_position_ok())
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"EKF_POSITION OK!!");
+    else
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"EKF POSITION bad!!");
+
+    if(optflow_position_ok())
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"OPTFLOW OK!!");
+    else
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"OPTFLOW bad!!");
+
     return (ekf_position_ok() || optflow_position_ok());
 }
 
