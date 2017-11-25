@@ -829,6 +829,7 @@ mission_failed:
 
     case MAVLINK_MSG_ID_SET_MODE:
     {
+
         handle_set_mode(msg, FUNCTOR_BIND(&tracker, &Tracker::mavlink_set_mode, bool, uint8_t));
         break;
     }

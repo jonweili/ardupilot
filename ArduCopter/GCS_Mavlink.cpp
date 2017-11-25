@@ -997,6 +997,9 @@ void GCS_MAVLINK_Copter::handleMessage(mavlink_message_t* msg)
 
     case MAVLINK_MSG_ID_SET_MODE:       // MAV ID: 11
     {
+
+    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"RECIEVED SET MODE OK!!");
+
 #ifdef DISALLOW_GCS_MODE_CHANGE_DURING_RC_FAILSAFE
         if (!copter.failsafe.radio) {
             handle_set_mode(msg, FUNCTOR_BIND(&copter, &Copter::gcs_set_mode, bool, uint8_t));

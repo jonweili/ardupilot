@@ -1458,6 +1458,8 @@ void GCS_MAVLINK::send_battery2(const AP_BattMonitor &battery)
  */
 void GCS_MAVLINK::handle_set_mode(mavlink_message_t* msg, set_mode_fn set_mode)
 {
+	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"ENTER HANDLE SET MODE!!");
+
     uint8_t result = MAV_RESULT_FAILED;
     mavlink_set_mode_t packet;
     mavlink_msg_set_mode_decode(msg, &packet);
