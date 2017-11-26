@@ -416,6 +416,7 @@ void  NavEKF2_core::updateFilterStatus(void)
     filterStatus.flags.horiz_vel = someHorizRefData && filterHealthy;      // horizontal velocity estimate valid
     filterStatus.flags.vert_vel = someVertRefData && filterHealthy;        // vertical velocity estimate valid
     filterStatus.flags.horiz_pos_rel = ((doingFlowNav && gndOffsetValid) || doingWindRelNav || doingNormalGpsNav) && filterHealthy;   // relative horizontal position estimate valid
+    //GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF," POSHOLD FALSE!!");
     filterStatus.flags.horiz_pos_abs = doingNormalGpsNav && filterHealthy; // absolute horizontal position estimate valid
     filterStatus.flags.vert_pos = !hgtTimeout && filterHealthy && !hgtNotAccurate; // vertical position estimate valid
     filterStatus.flags.terrain_alt = gndOffsetValid && filterHealthy;		// terrain height estimate valid

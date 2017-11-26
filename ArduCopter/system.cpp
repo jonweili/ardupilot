@@ -388,7 +388,7 @@ bool Copter::optflow_position_ok()
         return (filt_status.flags.pred_horiz_pos_rel);
     } else {
 
-      	if(filt_status.flags.horiz_pos_rel)
+      	/*if(filt_status.flags.horiz_pos_rel)
     	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"horiz_pos_rel OK!!");
     	    else
     	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"horiz_pos_rel bad!!");
@@ -396,7 +396,7 @@ bool Copter::optflow_position_ok()
       	if(!filt_status.flags.const_pos_mode)
       	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"!const_pos_mode OK!!");
     	    else
-    	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"!const_pos_mode bad!!");
+    	    	GCS_MAVLINK::send_statustext(MAV_SEVERITY_INFO,0xFF,"!const_pos_mode bad!!");*/
 
 
         return (filt_status.flags.horiz_pos_rel && !filt_status.flags.const_pos_mode);
